@@ -1,0 +1,17 @@
+{
+  "name": "cookieclocker",
+  "version": "1.0.0",
+  "description": "A incremental game-ish discord bot",
+  "main": "bot.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc; cd ./dist; node ./bot.js ../config.json ../user_data/"
+  },
+  "author": "Maddymakesgames",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^11.13.4",
+    "discord.js": "git+https://github.com/discordjs/discord.js.git",
+    "typescript": "^3.4.4"
+  }
+}
