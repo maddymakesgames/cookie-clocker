@@ -1,7 +1,6 @@
 import { Structures, User } from 'discord.js';
 import {UserMaker, Maker, CookieClockerClient} from '../modules/types';
 import fs from 'fs'
-const makerList = require('../makers.json');
 
 export class CookieClockerUser extends User {
 

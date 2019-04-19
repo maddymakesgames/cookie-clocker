@@ -1,0 +1,42 @@
+{
+	"makers":[
+	{
+		"name":"Time Toaster",
+		"description":"Bakes clocks through time, the cheap way",
+		"cost":"10",
+		"cpm":1,
+		"effects":{}
+	},
+	{
+		"name":"Cookie Oven",
+		"description":"Bakes clocks via heat, love, and magic",
+		"cost":50,
+		"cpm":5,
+		"effects":{}
+	},
+	{
+		"name":"Mass Oven",
+		"description":"Bakes clocks in an oven array",
+		"cost":200,
+		"cpm":10,
+		"effects":{}
+	},
+	{
+		"name":"Time portal",
+		"description":"Clocks come through the portal from throughout the ages",
+		"cost":10000,
+		"cpgm":10,
+		"effects":{}
+	},
+	{
+		"name":"Rainbow Oven",
+		"description":"Made from the essence of a rainbow, the clocks it bakes are made of pots of gold",
+		"cost":10000,
+		"cpgm":1,
+		"effects":{},
+		"unlock":{
+			"trigger":"{{prestige}}>1"
+		}
+	}
+	]
+}

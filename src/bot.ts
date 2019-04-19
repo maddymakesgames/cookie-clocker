@@ -1,6 +1,7 @@
 //Get the config file and user data paths
 let configPath = '../config.json'
 let userDataPath = '../user_data/'
+let makersPath = '../makers.json'
 
 import Discord from 'discord.js'
 import * as fs from 'fs'
@@ -70,7 +71,7 @@ fs.readdirSync('./commands').forEach((file) => {
 	}
 });
 
-client.makers = require('./makers.json').makers;
+client.makers = require(makersPath).makers;
 client.userDataPath = userDataPath;
 
 
