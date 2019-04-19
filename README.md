@@ -10,4 +10,5 @@ This was originally written in just javascript but was rewritten into typescript
 
 ## Running
 Put your token in `example_config.json` and rename it to `config.json`
+Create a folder called `user_data`
 Run `npm i` and then `npm start` to install the dependencies and then compile and run the bot.
