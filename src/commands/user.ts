@@ -1,7 +1,7 @@
 import {MessageEmbed} from 'discord.js'
 import {CookieClockerClient, CookieClockerMessage, Command, CookieClockerGuildMember} from '../modules/types'
 
-export default class User implements Command {
+export default new class User implements Command {
     aliases: string[] = [];
     name: string = 'user';
     run = (client:CookieClockerClient, message:CookieClockerMessage, args:string[]) => {
@@ -10,7 +10,6 @@ export default class User implements Command {
         
         let embed = new MessageEmbed();
         embed = embed.setColor(message.member.displayHexColor).setFooter(targetUser.tag).addField('Cookies',targetUser.cookies).addField('Clocks',targetUser.clocks).setDescription(targetUser.description).setThumbnail(targetUser.displayAvatarURL()).setTimestamp(Date.now()).setTitle(targetMember.displayName || targetUser.username);
-        console.log(embed);
         message.channel.send(embed);
     }
 }

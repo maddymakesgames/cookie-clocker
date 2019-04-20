@@ -1,20 +1,21 @@
 import { Page }  from '../modules/page';
 import {Command, CookieClockerClient, CookieClockerMessage} from '../modules/types'
 
-export default class Shop implements Command {
+export default new class Shop implements Command {
 	aliases: string[] = [];
 	name: string = 'shop';
 	run = async (client:CookieClockerClient, message:CookieClockerMessage, args:string[]) => {
+		let allowedMakers = client.makers.filter((m) => message.author.canUseMaker(m))
 		let makerList = {};
 		let emoteList = [':keycap_ten:', ':nine:', ':eight:', ':seven:', ':six:', ':five:', ':four:', ':three:', ':two:', ':one:'].reverse();
-		for(let i = 0; i < client.makers.length; i++) {
-			let maker = client.makers[i];
+		for(let i = 0; i < allowedMakers.length; i++) {
+			let maker = allowedMakers[i];
 			makerList[`${emoteList[i%8]} : ${maker.name}`] = `Cost: ${message.author.getCost(maker)}\n${!maker.cpgm ? `CPM: ${maker.cpm}` : `CPGM: ${maker.cpgm}`}`
 		}
 		let msg = await message.channel.send('Loading Store... \n Please Wait...');
 
 		let optionsFunction = (index:number, currPage:number) => {
-			let chosenMaker = client.makers[index+(8*currPage)];
+			let chosenMaker = allowedMakers[index+(8*currPage)];
 			const cost = message.author.getCost(chosenMaker);
 			if(message.author.clocks >= cost) {
 				message.author.addMaker(chosenMaker);

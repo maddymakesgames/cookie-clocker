@@ -1,6 +1,6 @@
 import {CookieClockerMessage, CookieClockerClient, Command} from '../modules/types'
 
-export default class Save implements Command {
+export default new class Save implements Command {
     aliases: string[] = [];
     name: string = 'save';
     run = (client:CookieClockerClient, message:CookieClockerMessage, args:string[]) => {

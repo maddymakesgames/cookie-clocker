@@ -2,7 +2,7 @@ import { Command, CookieClockerClient, CookieClockerMessage } from "../modules/t
 import { Page } from '../modules/page';
 import { Message } from "discord.js";
 
-export default class Makers implements Command {
+export default new class Makers implements Command {
     aliases: string[] = [];
     name: string = 'makers';
     run = async (client:CookieClockerClient, message:CookieClockerMessage, args:string[]) => {

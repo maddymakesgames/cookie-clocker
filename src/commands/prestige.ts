@@ -1,10 +1,10 @@
 import {CookieClockerClient, Command, CookieClockerMessage} from '../modules/types'
 
-export default class Prestige implements Command {
+export default new class Prestige implements Command {
     aliases: string[] = [];
     name: string = 'prestige';
     run = (client:CookieClockerClient, message:CookieClockerMessage, args:string[]) => {
-        if(message.author.canPrestige()) {
+        if(message.author.canPrestige) {
             let potentialCookies = message.author.potentialCookies;
             message.channel.send(`${message.author.tag}, are you sure you want to prestige? You will get ${potentialCookies} (+${(1+(potentialCookies*0.01))*100}% cpm) and reset your makers and clocks to zero. \n(y/n)`)
             let acceptableAnswers = ['y','n','yes','no'];

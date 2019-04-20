@@ -24,13 +24,6 @@ const client = <CookieClockerClient>new Discord.Client({disableEveryone:true, di
 //Grab the config file and put it on the client object
 client.config = require(configPath);
 
-//A base ready event cause y not.
-client.on('ready', () => {
-	console.timeEnd('Start Up');
-	console.log('I\'m ready to collect those clocks!');
-});
-
-
 //Require the event files and bind them to their respective events, and send them the client object as a perameter
 fs.readdirSync('./events').forEach((file) => {
 	if(!file.endsWith('.js')) return;
@@ -53,8 +46,7 @@ fs.readdirSync('./commands').forEach((file) => {
 		if(f.endsWith('.js')) cmd = require(`./commands/${file}/${f}`);
 		if(!cmd) return;
 		client.commands[cmd.name] = cmd;
-		cmd = new cmd.default;
-
+		cmd = cmd.default;
 		for(let i = 0; i < cmd.aliases.length; i++) {
 			client.aliases[cmd.aliases[i]] = cmd.name;
 		}
@@ -62,8 +54,7 @@ fs.readdirSync('./commands').forEach((file) => {
 	else {
 		if(file.endsWith('.js')) cmd = require(`./commands/${file}`);
 		if(!cmd) return;
-		cmd = new cmd.default;
-		
+		cmd = cmd.default;		
 		client.commands[cmd.name] = cmd;
 		for(let i = 0; i < cmd.aliases.length; i++) {
 			client.aliases[cmd.aliases[i]] = cmd.name;
