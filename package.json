@@ -5,7 +5,7 @@
   "main": "bot.js",
   "scripts": {
     "build": "tsc",
-    "start": "tsc; cd ./dist; node ./bot.js ../config.json ../user_data/"
+    "start": "rm -rf ./dist; tsc; cd ./dist; node ./bot.js ../config.json ../user_data/"
   },
   "author": "Maddymakesgames",
   "license": "ISC",

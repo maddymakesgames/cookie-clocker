@@ -1,4 +1,3 @@
-import {Client, Message} from 'discord.js';
 import { CookieClockerClient, CookieClockerMessage, CookieClockerGuildMember } from '../modules/types';
 /**
  * 
@@ -20,16 +19,16 @@ function main(client:CookieClockerClient,message:CookieClockerMessage) {
 	if(!prefix) return;
 	else {
 		message.content = message.content.slice(prefix.length);
-		
-		let quotes = message.content.split('"');
-		quotes.forEach((str, index) => {
-			if(index%2 == 1) return;
-			quotes[index] = str.replace(/ /g, '<<secret-space-char-encoding-lo>>');
-		});
-		let args = quotes.join(' ').split(' ');
-		for(let i = 0; i < args.length; i++) {
-			args[i] = args[i].replace(/<<secret-space-char-encoding-lo>>/g, ' ');
-		}
+		let args = message.content.split(' ')
+		// let quotes = message.content.split('"');
+		// quotes.forEach((str, index) => {
+		// 	if(index%2 == 1) return;
+		// 	quotes[index] = str.replace(/ /g, '<<secret-space-char-encoding-lo>>');
+		// });
+		// let args = quotes.join(' ').split(' ');
+		// for(let i = 0; i < args.length; i++) {
+		// 	args[i] = args[i].replace(/<<secret-space-char-encoding-lo>>/g, ' ');
+		// }
 		let command = client.commands[args[0]];
 		if(!command) command = client.commands[client.aliases[args[0]]];
 		if(!command) return console.log(`no command: ${args}`);

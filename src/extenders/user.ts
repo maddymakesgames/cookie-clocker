@@ -13,6 +13,7 @@ export class CookieClockerUser extends User {
 	public allTimeClocks:number;
 	public allTimeCookies:number;
 	public client:CookieClockerClient;
+	private highestClocks:number;
 
 
 	constructor(client:CookieClockerClient, data:object) {
@@ -37,11 +38,9 @@ export class CookieClockerUser extends User {
 	updateClocks() {
 		for(let i = 0; i < this.makers.length; i++) {
 			let maker = this.makers[i]
-			console.log(maker)
 			this.clocks += Math.floor((maker.cpm*maker.count)*this.cookieBoost);
-			console.log(Math.floor((maker.cpm*maker.count)*this.cookieBoost))
-			console.log(this.clocks)
 		}
+		if(this.clocks > this.highestClocks) this.highestClocks = this.clocks;
 	}
 
 	globalMakersTick() {
@@ -56,12 +55,13 @@ export class CookieClockerUser extends User {
 	 */
 	addMaker(maker:Maker) {
 		//test if the user already has a maker of the type. If they do just add 1 to the count.
-		if(Object.keys(this.makers).indexOf(maker.name) != -1) this.makers[maker.name]['count'] += 1;
+		if(this.makers.filter((m) => m.name == maker.name)[0]) this.makers[this.makers.findIndex((m)=>m.name==maker.name)]['count'] += 1;
 		//If they don't then give them the maker and add a new prop to it listing how many the user has
 		else {
-			if(maker.cpgm) this.globalMakers[maker.name] = maker;
-			this.makers[maker.name] = maker;
-			this.makers[maker.name].count = 1;
+			(<UserMaker>maker).count = 1;
+			if(maker.cpgm) this.globalMakers.push(<UserMaker>maker);
+			else this.makers.push(<UserMaker>maker);
+			
 		}
 	}
 
@@ -69,13 +69,13 @@ export class CookieClockerUser extends User {
 	 * If the user has any makers
 	 */
 	get hasMakers() {
-		return !(!Object.keys(this.makers)[0])
+		return Object.keys(this.makers)[0]
 	}
 
 	/**
 	 * Returns if the user can prestige, its just if they have > 1,000,000,000 clocks
 	 */
-	canPrestige() {
+	get canPrestige() {
 		return this.clocks > 1000000000
 	}
 
@@ -95,6 +95,7 @@ export class CookieClockerUser extends User {
 		this.cookies += Math.floor(Math.cbrt(this.clocks/1000000000) + extraCookies);
 		this.clocks = 0;
 		this.makers = [];
+		this.highestClocks = 0;
 	}
 
 	/**
@@ -115,6 +116,7 @@ export class CookieClockerUser extends User {
 		this.globalMakers = data.globalMakers || this.globalMakers;
 		this.allTimeClocks = data.allTimeClocks || this.allTimeClocks;
 		this.allTimeCookies = data.allTimeCookies || this.allTimeCookies;
+		this.highestClocks = data.highestClocks || this.highestClocks;
 	}
 
 	/**
@@ -137,14 +139,15 @@ export class CookieClockerUser extends User {
 			console.error(e)
 		}
 		let userdata = {
-			makers:this.makers || data.makers,
-			globalMakers:this.globalMakers || data.globalMakers,
-			cookies:this.cookies || data.cookies,
-			clocks:this.clocks || data.clocks,
-			currPrestiege:this.currPrestiege || data.currPrestiege,	
-			description:this.description || data.description,
-			allTimeClocks:this.allTimeClocks || data.allTimeClocks,
-			allTimeCookies:this.allTimeCookies || data.allTimeCookies
+			makers:this.makers,
+			globalMakers:this.globalMakers,
+			cookies:this.cookies,
+			clocks:this.clocks,
+			currPrestiege:this.currPrestiege,	
+			description:this.description,
+			allTimeClocks:this.allTimeClocks,
+			allTimeCookies:this.allTimeCookies,
+			highestClocks:this.highestClocks
 		}
 		fs.writeFileSync(`${this.client.userDataPath}${this.id}.json`, JSON.stringify(userdata));
 	}
@@ -152,9 +155,7 @@ export class CookieClockerUser extends User {
 	/**
 	 * Returns the cost of the maker for the user, this allows the cost to increase in order to avoid crazy power out of the early things.
 	 */
-	getCost(maker) {
-		console.log(Object.keys(this.makers).indexOf(maker.name));
-		console.log(this.makers[Object.keys(this.makers).indexOf(maker.name)]);
+	getCost(maker:Maker) {
 		//If the user doesn't already have the maker just return the default cost
 		if(Object.keys(this.makers).indexOf(maker.name) == -1) return maker.cost;
 		else {
@@ -191,18 +192,23 @@ export class CookieClockerUser extends User {
 	 * @param {Object} maker
 	 * Tests if the user has the conditions to unlock a maker
 	 */
-	unlockMaker(maker) {
-		if(!maker.unlock)return this.clocks > maker.cost*.9;
-		let test = maker.unlock.trigger;
-		test.replace(/{{prestige}}/g, this.currPrestiege).replace(/{{cookies}}/g, this.cookies).replace(/{{clocks}}/g, this.clocks);
-		return eval(test);
+	canUseMaker(maker:Maker) {
+		if(!maker.requirements)return this.clocks > maker.cost*.9;
+		maker.requirements.push('this.clocks > maker.cost*.9')
+		for(let i = 0; i < maker.requirements.length; i++){
+			let test = maker.requirements[i];
+			test.replace(/{{prestige}}/g, this.currPrestiege.toString()).replace(/{{cookies}}/g, this.cookies.toString()).replace(/{{clocks}}/g, this.clocks.toString());
+			let req = eval(test);
+			if(!req) return false;
+		}
+		return true;
 	}
 
 	/**
 	 * @param {String} newDesc
 	 * @returns {Number | String} returns -1 if the description is too long, returns the new description apon a valid set
 	 */
-	setDescription(newDesc) {
+	setDescription(newDesc:string) {
 		if(typeof newDesc != 'string') throw new TypeError('User\'s description must be a string');
 		if(newDesc.length > 552) return -1;
 		this.description = newDesc;

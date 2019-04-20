@@ -5,7 +5,8 @@
 		"description":"Bakes clocks through time, the cheap way",
 		"cost":"10",
 		"cpm":1,
-		"effects":{}
+		"effects":{},
+		"requirements":["maker.requirements.unshift(); 2>1"]
 	},
 	{
 		"name":"Cookie Oven",
