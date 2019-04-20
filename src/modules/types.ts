@@ -1,6 +1,7 @@
 import { Client, Message, GuildMember, MessageMentions, Collection, User, Role, GuildMemberStore, Base } from "discord.js";
 import { CookieClockerUser } from "../extenders/user";
 import { CookieClockerGuild } from "../extenders/guild";
+import { CookieClockerTextChannel } from "../extenders/textChannel";
 
 export type Maker = {
     name:string;
@@ -35,7 +36,8 @@ export class CookieClockerMessage extends Message {
     public author:CookieClockerUser;
     public member:CookieClockerGuildMember;
     public guild:CookieClockerGuild;
-    public mentions:CookieClockerMessageMentions;
+	public mentions:CookieClockerMessageMentions;
+	public channel:CookieClockerTextChannel;
 }
 
 export class CookieClockerGuildMember extends GuildMember {

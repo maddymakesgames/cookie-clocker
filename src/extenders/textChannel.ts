@@ -1,6 +1,6 @@
 import { Structures, MessageEmbed, MessageAttachment, TextChannel, Message } from 'discord.js';
 
-class NewTextChannel extends TextChannel {
+export class CookieClockerTextChannel extends TextChannel {
 	constructor(...args) {
 		super(args[0], args[1]);
 	}
@@ -23,4 +23,4 @@ class NewTextChannel extends TextChannel {
 	}
 }
 
-Structures.extend('TextChannel', (...args) => NewTextChannel);
+Structures.extend('TextChannel', (...args) => CookieClockerTextChannel);
