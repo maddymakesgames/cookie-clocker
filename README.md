@@ -5,7 +5,7 @@ So what started as a dumb idea and a typo has become an actual project that I ha
 
 This is an incremental game-esque bot for discord, with each message you send updating your 'makers' and giving you clocks. Its technically in a playable state but I wouldn't recommend it right now. After reaching 1 trillion clocks (pretty much impossible right not) you can prestige and get cookies which each give you a 1% boost to production.
 
-This was originally written in just javascript but was rewritten into typescript, thats there are quite a few function parameters and variables that don't specify types. I'm planning on fixing this in the future but its not my highest priority.
+This was originally written in just javascript but was rewritten into typescript, thats why there are quite a few places where variables don't specify type. I'm planning on fixing this in the future but its not my highest priority.
 
 
 ## Running
